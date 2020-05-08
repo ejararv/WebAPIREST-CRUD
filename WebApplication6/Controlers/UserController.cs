@@ -24,6 +24,7 @@ namespace WebApplication6.Controllers
             }
         }
 
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> Get()
         {
@@ -44,27 +45,22 @@ namespace WebApplication6.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> Post(User user)
         {
-            // обработка частных случаев валидации
-            if (user.Age == 99)
-                ModelState.AddModelError("Age", "Возраст не должен быть равен 99");
 
-          
 
-            if (user.Name == "admin")
+
+
+
+
+            if (user == null)
             {
-                ModelState.AddModelError("Name", "Недопустимое имя пользователя - admin");
+                return BadRequest();
             }
-            // если есть лшибки - возвращаем ошибку 400
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
-
-
-            // если ошибок нет, сохраняем в базу данных
             db.Users.Add(user);
             await db.SaveChangesAsync();
             return Ok(user);
         }
+
 
         // PUT api/users/
         [HttpPut]
